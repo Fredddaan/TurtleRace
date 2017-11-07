@@ -2,44 +2,69 @@ package graphics
 
 import cslib.window.SimpleWindow
 
-class Turtle(val window: SimpleWindow,
-             val initPosition: Point = Point(0.0, 0.0),
-             val initDirection: Double = 0.0,
-             val initIsPenDown: Boolean = true) {
+class Turtle( val window: SimpleWindow,
+              val initPosition: Point = new Point(0.0,0.0),
+              val initDirection: Double = 0,
+              val initIsPenDown: Boolean = true) {
 
-  /** The current x axis position rounded to nearest integer. */
-  def x: Int = ???
+  private var position = initPosition;
+  private var _direction = initDirection;
+  private var _penDown = initIsPenDown;
 
-  /** The current y axis position rounded to nearest integer. */
-  def y: Int = ???
+  override def toString = s"$position, $direction";
 
-  /** The current direction in degrees. */
-  def direction: Double = ???
+  def x: Int = { position.x.round.toInt }
 
-  /** Revert to initial position, direction and pen state. */
-  def home(): Turtle = ???
+  def y: Int = { position.y.round.toInt }
 
-  /** The state of the pen: true if pen is down, false if pen is up. */
-  def isPenDown: Boolean = ???
+  def direction: Double = { _direction }
 
-  /** Move to a new position without drawing a line. */
-  def jumpTo(newPosition: Point): Turtle = ???
+  def home(): Turtle = {
+    position = initPosition;
+    _direction = initDirection
+    _penDown = initIsPenDown
+    this
+  }
+  //def isPenDown: Boolean = { _penDown }
 
-  /** Move distance in direction, drawing a line if pen is down. */
-  def forward(distance: Double): Turtle = ???
+  def jumpTo(newPosition: Point): Turtle = {
+    position = newPosition
+    this
+  }
 
-  /** Turn the turtle counter-clockwise from current direction. */
-  def turnLeft(degrees: Double): Turtle = ???
+  def forward(distance: Double): Turtle = {
+    var toPoint = position + Point.polar(distance, _direction.toRadians.toDouble).negY
 
-  /** Turn the turtle clockwise from current direction. */
-  def turnRight(degrees: Double): Turtle = ???
+    if (_penDown){
+      window.moveTo(position.x.round.toInt, position.y.round.toInt)
+      window.lineTo(toPoint.x.toInt, toPoint.y.toInt)
+    }
+    position = toPoint
+    this
+  }
 
-  /** Turn the turtle straight up. */
-  def turnNorth(): Turtle = ???
+  def turnLeft(degrees: Double): Turtle = {
+    _direction = (_direction + degrees) % 360
+    this
+  }
 
-  /** Set the turtle's pen down. */
-  def penDown(): Turtle = ???
+  def turnRight(degrees: Double): Turtle = {
+    _direction = (_direction - degrees) % 360
+    this
+  }
 
-  /** Lifts the turtle's pen. */
-  def penUp(): Turtle = ???
+  def turnNorth(): Turtle = {
+    _direction = 90;
+    this
+  }
+
+  def penDown(): Turtle = {
+    _penDown = true;
+    this
+  }
+
+  def penUp(): Turtle = {
+    _penDown = false;
+    this
+  }
 }
