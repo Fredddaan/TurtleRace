@@ -2,7 +2,9 @@ package turtlerace
 
 import graphics.{Turtle, Point}
 import cslib.window.SimpleWindow
-import java.awt.Color
+import java.awt.Color 
+
+// Hej!
 
 class ColorTurtle(
   override val window: SimpleWindow,
