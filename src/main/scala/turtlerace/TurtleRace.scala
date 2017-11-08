@@ -1,6 +1,8 @@
+/*  Jacob Johnsson 2017-11-08
+    Programmering Grundkurs Lab 09 */
 package turtlerace
 
-import graphics.Turtle
+import graphics._
 import cslib.window._
 
 class TurtleRace(val millisPerStep: Int = 5) {
@@ -10,34 +12,40 @@ class TurtleRace(val millisPerStep: Int = 5) {
     title: String
   ): Seq[RaceTurtle] = {
 
-    /*  1. Sätt alla turtle på respektive startposition
-        2. while(någon inte vunnit)
-           Alla som INTE vinnut tar ett steg
-           Om (någon gick i mål
-              flytta de nturtlen till en Seq[] som representerar vinnarna i korrekt ordning
-     */
-    val winners = Array.fill(8)[RaceTurtle]
-    val winnerIndex = 0
+    // Skapa en lista fom representerar vinnarna i korrekt ordning 0 - n.
+    val winners = new Array[RaceTurtle](turtles.length)
 
-    var i = 0
+    // 1. Sätt alla turtles på respektive startposition
     for (t <- turtles.indices)
-      turtles(t).jumpTo(graphics.Point(rw.startY(i), rw.startY(i)))
+      turtles(t) jumpTo Point(rw.startY(t), rw.startY(t))
 
-    while (true) {
-      var t = 0
-      for (t <- turtles.indices) {
+    // 2. Sätt en variabel som håller koll på hur många som gått i mål.
+    var iMål = 0;
 
-        turtles(t).forward(1.0)
-        if (turtles(t).x > rw.endX)
-          winners(winnerIndex) = turtles(t)
-        i += 1
+    // 3. While(iMål < antalet tävlande)
+    while (iMål < turtles.length) {
+
+      // 3.1 Alla som INTE vunnit tar ett steg
+      for (t <- iMål until turtles.length - 1) {
+        turtles(t).raceStep()
+
+        // 3.2 Om (någon gick i mål)
+        if (turtles(t).x > rw.endX){
+
+          // Flytta den turtlen till listan av vinnare i korrekt ordning
+          winners(iMål) = turtles(t)
+
+          // Inkrementera antalet som gått i mål
+          iMål += 1
+        }
       }
     }
 
-
-    rw.writeTitle("TurtleRace NOT READY")
+    rw.writeTitle("TurtleRace MIGHT BE READY")
     rw.draw()
-    Seq()
+
+    // 4. Returnera listan av vinnare
+    winners.toSeq
   }
 
 }
