@@ -1,0 +1,16 @@
+package turtlerace
+
+trait MoleTurtle extends RaceTurtle {
+  val dizziness:Int = scala.util.Random.nextInt(5) + 1
+  override def raceStep(): Unit = {
+    
+    if(scala.util.Random.nextInt(10)+1 > 5){
+      penDown()
+      forward(scala.util.Random.nextInt(defaultStep))
+    }else{
+      penUp()
+      forward(scala.util.Random.nextInt(defaultStep))
+    }
+  }
+  override def toString: String = s"Mole turtle: #$nbr name: $name"
+}
