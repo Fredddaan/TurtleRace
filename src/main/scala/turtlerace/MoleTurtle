@@ -7,12 +7,12 @@ trait MoleTurtle extends RaceTurtle {
  
  override def raceStep(): Unit = {
     if(scala.util.Random.nextInt(10)+1 > moleprobability){
-      penUp()
+      penDown()
       forward(scala.util.Random.nextInt(defaultStep))
     }
     
     else{
-      penDown()
+      penUp()
       forward(scala.util.Random.nextInt(defaultStep/2)) //det skall vara trögare att ta sig fram under jorden
     }
     
